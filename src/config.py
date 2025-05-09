@@ -52,7 +52,7 @@ YEARS = [2020, 2021, 2022, 2023, 2024]
 
 #Format plus détaillé pour les années et les grands prix
 #Liste des saisons pour l'analyse (à mettre à jour en fonction des besoins)
-SEASON = {
+SEASONS = {
     2020 : {
         'name' : 'Saison 2020',
         'race' : [
@@ -321,7 +321,7 @@ TEAMS = {
 def configure_mpl_style ():
     """Configure le style matplotilib pour les visualisations."""
     plt.style.use('dark_background')                                                     # Utilise un thème sombre
-    plt.rcParams['figyre.figsize'] = (12, 7)                                             # Définit la taille par défaut des figures
+    plt.rcParams['figure.figsize'] = (12, 7)                                             # Définit la taille par défaut des figures
     plt.rcParams['figure.dpi'] = 100                                                     # Définit la résolution des figures
     plt.rcParams['axes.grid'] = True                                                     # Active la grille sur les axes
     plt.rcParams['grid.alpha'] = 0.3                                                     # Définit la transparence de la grille
@@ -335,8 +335,58 @@ def configure_mpl_style ():
     
 #Palettes de couleurs pour les visualisations
 COLOR_PALETTES = {
-    'teams' : {team : color for team, color in TEAMS[2024].item()}
+    'teams' : {team : color for team, color in TEAMS[2024].items()}
 }
 
+# --------------------------------------------------
+# Fonctions d'aide
+# --------------------------------------------------
 
+def get_driver_color(driver_code, year=2024):
+    """Retourne la couleur de l'équipe d'un pilote."""
+    # Cette fonction est un placeholder et devrait être mise à jour
+    # avec une implémentation qui utilise FastF1 pour obtenir la couleur de l'équipe
+    # du pilote en fonction du code du pilote et de l'année
+    return "#FFFFFF"  # Défaut pour l'instant
+
+def find_race_by_name(year, partial_name):
+    """Trouve le nom complet d'une course à partir d'un nom partiel."""
+    # Récupère la liste des courses pour l'année donnée, ou une liste vide si l'année n'existe pas
+    races = SEASONS.get(year, {}).get('races', [])
+    
+    # Crée une liste des courses dont le nom contient la chaîne recherchée (insensible à la casse)
+    matches = [race for race in races if partial_name.lower() in race.lower()]
+    
+    # Retourne la première correspondance trouvée, ou None si aucune correspondance
+    return matches[0] if matches else None
+
+# --------------------------------------------------
+# Configuration pour les analyses spécifiques
+# --------------------------------------------------
+
+# Configuration pour l'analyse des temps au tour
+LAP_TIME_ANALYSIS = {
+    'min_laps': 5,            # Nombre minimum de tours pour l'analyse
+    'outlier_threshold': 1.5,  # Seuil pour les valeurs aberrantes (en écarts-types)
+    'smoothing_window': 3      # Fenêtre de lissage pour les graphiques
+}
+
+# Configuration pour l'analyse des pneus
+TIRE_ANALYSIS = {
+    'wear_model': 'linear',   # Modèle de dégradation (linear, exponential)
+    'min_stint_length': 3     # Longueur minimale d'un stint pour l'analyse
+}
+
+# --------------------------------------------------
+# Configuration pour l'exportation
+# --------------------------------------------------
+
+# Formats d'exportation
+EXPORT_FORMATS = {
+    'plots': ['png', 'pdf', 'svg'],
+    'data': ['csv', 'json', 'xlsx']
+}
+
+# Configuration de qualité pour les plots exportés
+EXPORT_PLOT_DPI = 300
 
